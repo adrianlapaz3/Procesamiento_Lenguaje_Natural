@@ -16,7 +16,7 @@ El desafío se divide en tres partes principales:
 ### 1. Similaridad entre documentos
 Se seleccionaron 5 documentos al azar y se calcularon sus 5 vecinos más similares usando la similaridad del coseno.
 
-- **Coherencia temática**: se observó que los documentos con mayor similaridad a menudo pertenecen a la misma categoría (*rec.sport.hockey*, *rec.sport.baseball*). Por ejemplo, un documento de la categoría *rec.sport.hockey* tuvo sus 5 documentos más similares también pertenecientes a esa categoría, con valores de coseno de hasta **0.37**.
+- **Coherencia temática**: se observó que los documentos con mayor similaridad a menudo pertenecen a la misma categoría, por ejemplo *rec.sport.hockey* y *rec.sport.baseball*.
 - **Bajos valores de coseno**: En general, los valores de similaridad fueron moderados o bajos (entre 0.14 y 0.37). Esto sugiere que, si bien la similaridad del coseno puede agrupar temas, podría no ser el método más robusto para una clasificación precisa por sí solo.
 
 ### 2. Clasificación con Naïve Bayes
