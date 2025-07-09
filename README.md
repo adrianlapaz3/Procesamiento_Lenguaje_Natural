@@ -1,4 +1,5 @@
-# Desafío 1: análisis de Texto con Scikit-learn
+# Desafío 1 
+# ADRIÁN LAPAZ (1706)
 
 Este proyecto aborda un desafío de Procesamiento del Lenguaje Natural (PLN) utilizando el conjunto de datos **20 Newsgroups**. El objetivo es explorar técnicas de vectorización, clasificación de texto y análisis de similaridad semántica entre palabras.
 
