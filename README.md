@@ -1,7 +1,7 @@
+## ADRIÁN LAPAZ (1706)
 # Desafío 1 
-# ADRIÁN LAPAZ (1706)
 
-Este proyecto aborda un desafío de Procesamiento del Lenguaje Natural (PLN) utilizando el conjunto de datos **20 Newsgroups**. El objetivo es explorar técnicas de vectorización, clasificación de texto y análisis de similaridad semántica entre palabras.
+Este proyecto aborda un desafío de Procesamiento del Lenguaje Natural (PLN) utilizando el conjunto de datos **20 Newsgroups** desde *scikit-learn*. El objetivo es explorar técnicas de vectorización, clasificación de texto y análisis de similaridad semántica entre palabras.
 
 ## Descripción del desafío
 
