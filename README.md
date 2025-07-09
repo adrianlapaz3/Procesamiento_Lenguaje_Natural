@@ -16,8 +16,8 @@ El desafío se divide en tres partes principales:
 ### 1. Similaridad entre documentos
 Se seleccionaron 5 documentos al azar y se calcularon sus 5 vecinos más similares usando la similaridad del coseno.
 
-- **Coherencia temática**: se observó que los documentos con mayor similaridad a menudo pertenecen a la misma categoría, por ejemplo *rec.sport.hockey* y *rec.sport.baseball*.
-- **Bajos valores de coseno**: En general, los valores de similaridad fueron moderados o bajos (entre 0.14 y 0.37). Esto sugiere que, si bien la similaridad del coseno puede agrupar temas, podría no ser el método más robusto para una clasificación precisa por sí solo.
+- **Coherencia temática**: se observó que los documentos con mayor similaridad a menudo pertenecen a la misma categoría, por ejemplo *rec.sport.hockey* y *rec.sport.baseball* tuvieron una similitud de coseno de 0.37.
+- **Restulados**: los valores de similaridad de coseno fueron moderados o bajos (entre 0.14 y 0.37). Esto sugiere que, si bien la similaridad del coseno puede agrupar temas, podría no ser el método más robusto para una clasificación precisa por sí solo.
 
 ### 2. Clasificación con Naïve Bayes
 Se utilizó **optimización bayesiana (*BayesSearchCV*)** para encontrar los mejores hiperparámetros tanto para el vectorizador *TfidfVectorizer* como para los clasificadores *MultinomialNB* y *ComplementNB*.
@@ -29,15 +29,17 @@ Se utilizó **optimización bayesiana (*BayesSearchCV*)** para encontrar los mej
   - **MultinomialNB**: *F1-score* en Test de **0.6876**.
   - **ComplementNB**: *F1-score* en Test de **0.6969**.
 
-Ambos modelos mostraron un rendimiento muy similar, aunque *ComplementNB* fue marginalmente superior. El análisis de hiperparámetros reveló que *ComplementNB* logró su mejor rendimiento con un filtrado dinámico de vocabulario y un suavizado mayor, sugiriendo una mayor robustez frente al ruido léxico.
+Ambos modelos mostraron un rendimiento muy similar, aunque *ComplementNB* fue apenas superior. El análisis de hiperparámetros reveló que *ComplementNB* logró su mejor rendimiento con un filtrado dinámico de vocabulario y un suavizado mayor, sugiriendo una mayor robustez frente al ruido léxico.
 
 ### 3. Similaridad entre palabras
 Se analizó la similaridad entre 5 palabras seleccionadas (*ball*, *doctor*, *python*, *space*, *water*) tras transponer la matriz *TF-IDF*.
 
 - **Captura de contexto temático y/o semántica**: el análisis demostró la capacidad del modelo para identificar relaciones contextuales muy específicas.
-  - La asociación más fuerte fue entre **python** y **monty** (similaridad de **0.7138**), una clara referencia semántica al grupo de comedia *"Monty Python"*.
+  - La asociación más fuerte fue entre **python** y **monty** (similaridad de coseno de **0.7138**), una clara referencia semántica al grupo de comedia *"Monty Python"*.
   - Se encontraron fuertes agrupaciones temáticas, como **doctor** con **receptionist** (0.4392) y **space** con **nasa** (0.3304).
-  - La palabra **water** se asoció con términos de infraestructura urbana como **towers**, **dpw** y **croton**, mostrando cómo el modelo captura el contexto específico del *corpus*.
+  - El modelo probó ser altamente dependiente del contexto del corpus: la palabra *water* no se relacionó con la naturaleza, sino con infraestructura urbana (*towers*, *dpw*, *croton*), reflejando los temas de discusión en los datos.
+  
+  La técnica de transponer la matriz fue muy efectiva para descubrir conexiones temáticas, semánticas y contextuales entre las palabras, ofreciendo una visión profunda de cómo se utilizan las palabras dentro del conjunto de datos.
 
 ---
 
