@@ -8,7 +8,7 @@ Este proyecto aborda un desafío de Procesamiento del Lenguaje Natural (PLN) uti
 El desafío se divide en tres partes principales:
 1.  **Similaridad de documentos**: vectorizar el *corpus* de texto y analizar la similaridad del coseno entre documentos para evaluar la coherencia temática.
 2.  **Clasificación de texto**: entrenar y optimizar modelos de clasificación Naïve Bayes (*MultinomialNB* y *ComplementNB*) para predecir la categoría de un documento, maximizando la métrica *f1-score macro*.
-3.  **Similaridad de Palabras**: transponer la matriz documento-término para crear vectores de palabras y analizar las relaciones semánticas entre términos seleccionados manualmente.
+3.  **Similaridad de palabras**: transponer la matriz documento-término para crear vectores de palabras y analizar las relaciones semánticas entre términos seleccionados manualmente.
 
 
 ## Resultados principales
