@@ -1,78 +1,141 @@
-# Desafio 2
-## Word Embeddings para *Hamlet* de Shakespeare
-El objetivo principal de este proyecto es explorar las relaciones semánticas dentro del texto de *Hamlet* aplicando *word2vec*, una popular técnica de *word embeddings*. El *notebook* guía a través de los siguientes pasos:
-1.  **Extracción y preprocesamiento de texto**: aislamiento del diálogo de la versión del corpus *gutenberg* de "Hamlet", limpieza del texto y aplicación de tokenización, lematización y eliminación de *stopwords*.
-2.  **Entrenamiento del modelo *word2vec***: entrenamiento de un modelo *word2vec* *skip-gram* utilizando la librería *gensim* para aprender representaciones vectoriales densas (*embeddings*) para palabras basándose en sus patrones de co-ocurrencia.
-3.  **Análisis semántico**: evaluación de los *embeddings* aprendidos mediante consultas de similitud de palabras y pruebas de analogía.
-4.  **Reducción de dimensionalidad y visualización**: uso de *t-sne* para reducir los vectores de palabras de alta dimensión a 2d y 3d para la exploración visual de clústeres y relaciones de palabras.
+## ADRIÁN LAPAZ (1706)
+# Desafío 1 
 
-## Características
+Este desafio aborda un desafío de Procesamiento del Lenguaje Natural (PLN) utilizando el conjunto de datos **20 Newsgroups** desde *scikit-learn*. El objetivo es explorar técnicas de vectorización, clasificación de texto y análisis de similaridad semántica entre palabras.
 
-* **Descarga automática de recursos *nltk***: asegura que todos los corpus y modelos *nltk* necesarios estén disponibles.
-* **Preprocesamiento de texto robusto**: incluye limpieza basada en expresiones regulares para eliminar elementos estructurales (marcadores de acto/escena, etiquetas de hablantes, direcciones de escena) y pasos estándar de *pln* (tokenización, minúsculas, lematización, eliminación de *stopwords*).
-* **Entrenamiento de *word2vec* con seguimiento de pérdidas**: implementa una función de *callback* personalizada para monitorear la pérdida de entrenamiento por época, lo que proporciona información sobre la convergencia del modelo.
-* **Consultas de similitud de palabras**: demuestra la funcionalidad `most_similar` para encontrar palabras semánticamente cercanas a términos de interés dentro del contexto de "Hamlet".
-* **Aritmética vectorial para analogías**: intenta realizar analogías vectoriales (por ejemplo, "*rey*" - "*hombre*" + "*mujer*" = "*reina*") para probar la capacidad del modelo para capturar relaciones semánticas abstractas.
-* **Visualizaciones interactivas *t-sne***: genera diagramas de dispersión interactivos en 2d y 3d utilizando *plotly*, lo que permite la exploración visual de clústeres de palabras en el espacio de *embedding*.
+## Descripción del desafío
 
+El desafío se divide en tres partes principales:
+1.  **Similaridad de documentos**: vectorizar el *corpus* de texto y analizar la similaridad del coseno entre documentos para evaluar la coherencia temática.
+2.  **Clasificación de texto**: entrenar y optimizar modelos de clasificación Naïve Bayes (*MultinomialNB* y *ComplementNB*) para predecir la categoría de un documento, maximizando la métrica *f1-score macro*.
+3.  **Similaridad de palabras**: transponer la matriz documento-término para crear vectores de palabras y analizar las relaciones semánticas entre términos seleccionados manualmente.
+
+
+## Resultados principales
+
+### 1. Similaridad entre documentos
+Se seleccionaron 5 documentos al azar y se calcularon sus 5 vecinos más similares usando la similaridad del coseno.
+
+- **Coherencia temática**: se observó que los documentos con mayor similaridad a menudo pertenecen a la misma categoría, por ejemplo *rec.sport.hockey* y *rec.sport.baseball* tuvieron una similitud de coseno de 0.37.
+- **Restulados**: los valores de similaridad de coseno fueron moderados o bajos (entre 0.14 y 0.37). Esto sugiere que, si bien la similaridad del coseno puede agrupar temas, podría no ser el método más robusto para una clasificación precisa por sí solo.
+
+### 2. Clasificación con Naïve Bayes
+Se utilizó **optimización bayesiana (*BayesSearchCV*)** para encontrar los mejores hiperparámetros tanto para el vectorizador *TfidfVectorizer* como para los clasificadores *MultinomialNB* y *ComplementNB*.
+
+- **Rendimiento en entrenamiento (CV, Cross-Validation)**:
+  - **MultinomialNB**: mejor *F1-score* (CV) de **0.7626**.
+  - **ComplementNB**: mejor *F1-score* (CV) de **0.7661**.
+- **Rendimiento en los datos de testeo**:
+  - **MultinomialNB**: *F1-score* en Test de **0.6876**.
+  - **ComplementNB**: *F1-score* en Test de **0.6969**.
+
+Ambos modelos mostraron un rendimiento muy similar, aunque *ComplementNB* fue apenas superior. El análisis de hiperparámetros reveló que *ComplementNB* logró su mejor rendimiento con un filtrado dinámico de vocabulario y un suavizado mayor, sugiriendo una mayor robustez frente al ruido léxico.
+
+### 3. Similaridad entre palabras
+Se analizó la similaridad entre 5 palabras seleccionadas (*ball*, *doctor*, *python*, *space*, *water*) tras transponer la matriz *TF-IDF*.
+
+- **Captura de contexto temático y/o semántica**: el análisis demostró la capacidad del modelo para identificar relaciones contextuales muy específicas.
+  - La asociación más fuerte fue entre **python** y **monty** (similaridad de coseno de **0.7138**), una clara referencia semántica al grupo de comedia *"Monty Python"*.
+  - Se encontraron fuertes agrupaciones temáticas, como **doctor** con **receptionist** (0.4392) y **space** con **nasa** (0.3304).
+  - El modelo probó ser altamente dependiente del contexto del corpus: la palabra *water* no se relacionó con la naturaleza, sino con infraestructura urbana (*towers*, *dpw*, *croton*), reflejando los temas de discusión en los datos.
+  
+  La técnica de transponer la matriz fue muy efectiva para descubrir conexiones temáticas, semánticas y contextuales entre las palabras, ofreciendo una visión profunda de cómo se utilizan las palabras dentro del conjunto de datos.
+
+---
+
+## Metodología y herramientas
+
+- **Librerías principales**: *scikit-learn*, *numpy*, *skopt*.
+- **Vectorización**: *TfidfVectorizer*.
+- **Modelos**: *MultinomialNB*, *ComplementNB*.
+- **Métrica de evaluación**: *f1_score* (*macro average*).
+- **Técnica de optimización**: búsqueda bayesiana (*BayesSearchCV*) para una sintonización eficiente de hiperparámetros.
+
+## Conclusión
+La **similaridad del coseno** es útil para la exploración temática, pero los modelos de clasificación como **Naïve Bayes** son superiores para tareas de predicción. Además, el análisis de similaridad de palabras sobre la matriz transpuesta reveló ser una técnica muy poderosa para descubrir **relaciones semánticas** en el texto.
+
+---
+---
+
+# Desafío 2: Word Embeddings para *Hamlet* de Shakespeare
+
+El objetivo principal de este desafío es explorar las relaciones semánticas dentro del texto de "Hamlet" aplicando *Word2Vec*, una popular técnica de *Word Embeddings*. El *notebook* guía a través de los siguientes pasos:
+
+- **Extracción y preprocesamiento de texto**: aislamiento del diálogo de la versión del corpus *Gutenberg* de "Hamlet", limpieza del texto y aplicación de tokenización, lematización y eliminación de *stopwords*.
+- **Entrenamiento del modelo *Word2Vec***: entrenamiento de un modelo *Word2Vec* *skip-gram* utilizando la librería *Gensim* para aprender representaciones vectoriales densas (*embeddings*) para palabras basándose en sus patrones de co-ocurrencia.
+- **Análisis semántico**: evaluación de los *embeddings* aprendidos mediante consultas de similitud de palabras y pruebas de analogía.
+- **Reducción de dimensionalidad y visualización**: uso de *t-SNE* para reducir los vectores de palabras de alta dimensión a 2D y 3D para la exploración visual de clústeres y relaciones de palabras.
+
+---
+
+## Objetivos del desafío
+
+Este desafío fue desarrollado para cumplir con los siguientes ítems planteados:
+
+- **Crear los propios vectores con *Gensim* basado en lo visto en clase con otro *dataset***: Se ha utilizado el corpus de "Hamlet" de *NLTK* para entrenar un modelo *Word2Vec* desde cero, generando *embeddings* vectoriales específicos para esta obra.
+- **Probar términos de interés y explicar similitudes en el espacio de *embeddings***: Se han seleccionado un conjunto de palabras relevantes de "Hamlet" y se ha analizado su similitud a través de la función *most_similar* de *Gensim*, explicando las asociaciones contextuales y semánticas observadas. También se realizaron pruebas de analogía.
+- **Graficarlos**: Se han generado visualizaciones en 2D y 3D de los *Word Embeddings* utilizando *t-SNE* y la librería *Plotly* para representar la proximidad semántica entre las palabras en un espacio reducido.
+- **Obtener Conclusiones**: Se han derivado conclusiones detalladas a partir del preprocesamiento, el entrenamiento del modelo, los resultados de las pruebas de similitud/analogía y las visualizaciones de los *embeddings*.
+
+---
+
+## Características implementadas
+
+- **Descarga automática de recursos *NLTK***: asegura que todos los corpus y modelos *NLTK* necesarios estén disponibles.
+- **Preprocesamiento de texto robusto**: incluye limpieza basada en expresiones regulares para eliminar elementos estructurales (marcadores de acto/escena, etiquetas de hablantes, direcciones de escena) y pasos estándar de PLN (tokenización, minúsculas, lematización, eliminación de *stopwords*).
+- **Entrenamiento de *Word2Vec* con seguimiento de pérdidas**: implementa una función de *callback* personalizada para monitorear la pérdida de entrenamiento por época, lo que proporciona información sobre la convergencia del modelo.
+- **Consultas de similitud de palabras**: demuestra la funcionalidad *most_similar* para encontrar palabras semánticamente cercanas a términos de interés dentro del contexto de "Hamlet".
+- **Aritmética vectorial para analogías**: intenta realizar analogías vectoriales (por ejemplo, "rey" - "hombre" + "mujer" = "reina") para probar la capacidad del modelo para capturar relaciones semánticas abstractas.
+- **Visualizaciones interactivas *t-SNE***: genera diagramas de dispersión interactivos en 2D y 3D utilizando *Plotly*, lo que permite la exploración visual de clústeres de palabras en el espacio de *embedding*.
+
+---
 
 ## Análisis y resultados
 
-### Observaciones del preprocesamiento
+### Preprocesamiento del corpus
 
-El *pipeline* de preprocesamiento extrajo aproximadamente 3735 oraciones efectivas de "Hamlet" para el entrenamiento de *word2vec*. Las observaciones clave incluyen:
-* **Inclusión de elementos estructurales**: el preprocesamiento retuvo términos como `actus`, `primus`, `scoena`, `prima`, `enter`, `barnardo`, `francisco`, y abreviaturas de nombres de personajes (`fran`). Esto es útil para que el modelo aprenda el contexto de estos elementos y para analizar interacciones de personajes.
-* **Ortografías arcaicas**: el modelo aprendió *embeddings* para ortografías arcaicas (ej., `vnfold`, `liue`), reflejando el vocabulario específico del inglés shakespeariano.
-* **Limpieza efectiva**: la lematización y la eliminación de *stopwords* mejoraron significativamente la calidad de los *tokens* al reducir las variaciones de palabras y eliminar palabras comunes menos informativas.
+El *pipeline* de preprocesamiento extrajo aproximadamente 3735 oraciones efectivas de "Hamlet" para el entrenamiento de *Word2Vec*. Las observaciones clave incluyen:
 
-### Entrenamiento del modelo *word2vec*
+- **Inclusión de elementos estructurales**: el preprocesamiento retuvo términos como *actus*, *primus*, *scoena*, *prima*, *enter*, *barnardo*, *francisco*, y abreviaturas de nombres de personajes (*fran*).
+- **Ortografías arcaicas**: el modelo aprendió *embeddings* para ortografías arcaicas (ej., *vnfold*, *liue*), reflejando el vocabulario específico del inglés shakespeariano.
+- **Limpieza efectiva**: la lematización y la eliminación de *stopwords* mejoraron significativamente la calidad de los *tokens*.
 
-El modelo *word2vec* fue entrenado con 3735 oraciones procesadas durante 100 épocas. La pérdida por época disminuyó progresivamente de ~274k a ~28k, lo que indica un aprendizaje efectivo y la convergencia del modelo. El tamaño del vocabulario final fue de 4145 palabras, utilizando `min_count=1`, lo que implica que incluso palabras muy raras tienen *embeddings*, aunque su calidad puede ser menor debido a datos contextuales limitados.
+### Entrenamiento del modelo *Word2Vec*
+
+El modelo *Word2Vec* fue entrenado con 3735 oraciones procesadas durante 100 épocas. La pérdida por época disminuyó progresivamente de ~274k a ~28k, indicando un aprendizaje efectivo y la convergencia del modelo. El tamaño del vocabulario final fue de 4145 palabras.
 
 ### Pruebas de similitud y analogía
 
 #### Palabras más similares
-Los resultados de `most_similar` demuestran la capacidad del modelo para capturar asociaciones semánticas muy específicas y contextualmente relevantes dentro de "Hamlet" para las palabras presentes en su vocabulario.
-* Para `ophelia`, se observan asociaciones como `beautifed`, `idoll`, `orizons` y `nimph` (similitudes >0.73), que reflejan con precisión su caracterización y las descripciones textuales.
-* La fuerte relación de `queen` con `willow` y `aslant` (ambas >0.77) es particularmente perspicaz, ya que vincula directamente a la descripción icónica de la muerte de *ophelia* narrada por *gertrudis*.
-* `ghost` muestra una conexión temática con `adulterate` (0.6547).
-* Términos geopolíticos como `denmark` y `fortinbras` se asocian con un léxico militar y político relevante (`polake`, `warres`, `prison` para `denmark`; `compact`, `slay`, `inheritance` para `fortinbras`), con similitudes a menudo superiores a 0.79.
-* El modelo también aprendió asociaciones para ortografías arcaicas como `discouery` (similar a `king`).
-* Sin embargo, se identificaron asociaciones menos intuitivas, por ejemplo, para `hamlet` (`vnbrac`, `doublet`), que podrían interpretarse como ruido estadístico o la influencia de co-ocurrencias esporádicas en un corpus reducido, con puntuaciones de similitud moderadas (0.53-0.58).
+Los resultados de *most_similar* demuestran la capacidad del modelo para capturar asociaciones semánticas muy específicas y contextualmente relevantes dentro de "Hamlet" para las palabras presentes en su vocabulario.
+
+* Para *ophelia*, se observan asociaciones como *beautifed*, *idoll*, *orizons* y *nimph* (similitudes >0.73).
+* La fuerte relación de *queen* con *willow* y *aslant* (ambas >0.77) vincula directamente a la descripción de la muerte de Ofelia narrada por Gertrudis.
+* *ghost* muestra una conexión temática con *adulterate* (0.6547).
+* Términos geopolíticos como *denmark* y *fortinbras* se asociaron con un léxico militar y político relevante, con similitudes a menudo superiores a 0.79.
+* Se identificaron asociaciones menos intuitivas para *hamlet* (*vnbrac*, *doublet*), posiblemente ruido estadístico o la influencia de co-ocurrencias esporádicas.
 
 #### Similitudes entre pares
 La similitud coseno entre pares seleccionados cuantifica su cercanía en el espacio vectorial aprendido:
-* La relación `king` - `claudius` (0.4284) indica una asociación semántica moderada, reflejando su identidad parcialmente superpuesta en la narrativa.
-* Pares como `hamlet` - `ophelia` (0.2943) y `king` - `queen` (0.2157) exhiben similitudes más débiles, lo que podría sugerir que sus perfiles distribucionales no son suficientemente intercambiables en el corpus.
-* La similitud `death` - `ghost` (0.2938) es también moderada-baja, posiblemente indicando que, aunque conceptualmente ligados, sus contextos de uso en "hamlet" son suficientemente distintos.
+
+* La relación *king* - *claudius* (0.4284) indica una asociación semántica moderada.
+* Pares como *hamlet* - *ophelia* (0.2943) y *king* - *queen* (0.2157) exhiben similitudes más débiles.
+* La similitud *death* - *ghost* (0.2938) fue moderada-baja.
 
 #### Limitaciones del vocabulario
-Una limitación crítica observada es la ausencia de términos temáticos clave como `love`, `madness`, `revenge`, `skull` y `poison` en el vocabulario del modelo. Esto es probable debido a la frecuencia de los términos o al preprocesamiento, lo que impide una representación semántica completa de dimensiones narrativas fundamentales de "Hamlet".
+Una limitación crítica observada es la ausencia de términos temáticos clave como *love*, *madness*, *revenge*, *skull* y *poison* en el vocabulario del modelo, probablemente debido a su frecuencia o al preprocesamiento.
 
 #### Pruebas de analogía
-Las pruebas de analogía (`king` - `man` + `woman` ≈ `queen` y `laertes` - `polonius` + `ghost` ≈ `hamlet`) no identificaron los términos canónicos esperados. Los vectores resultantes de las operaciones aritméticas mostraron bajas similitudes coseno (0.3-0.5) con los términos más cercanos del vocabulario. Este resultado se atribuye principalmente a:
-* **Especificidad del corpus**: El modelo fue entrenado exclusivamente en "Hamlet", un corpus relativamente pequeño y altamente especializado. Esto limita su capacidad para aprender subestructuras lineales generalizables (desplazamientos vectoriales) que representan relaciones semánticas abstractas (como género o roles familiares) que se encuentran comúnmente en corpus más grandes y diversos.
-* **Falta de relaciones generalizables**: Los *embeddings* capturan principalmente patrones de co-ocurrencia específicos de la narrativa en lugar de relaciones lingüísticas más amplias.
+Las pruebas de analogía (*king* - *man* + *woman* $\approx$ *queen* y *laertes* - *polonius* + *ghost* $\approx$ *hamlet*) no identificaron los términos canónicos esperados. Esto se atribuye principalmente a la especificidad del corpus de "Hamlet", que es relativamente pequeño y altamente especializado, limitando la capacidad del modelo para aprender subestructuras lineales generalizables para relaciones semánticas abstractas.
 
-### Visualizaciones *t-sne*
+### Visualizaciones *t-SNE* de *Embeddings*
 
-Las visualizaciones *t-sne* (*t-distributed stochastic neighbor embedding*) son una técnica de reducción de dimensionalidad no lineal utilizada para representar relaciones de similitud semántica entre palabras.
+#### Gráfico *t-SNE* 2D
+La proyección 2D muestra agrupaciones temáticas, con cierto solapamiento. Una agrupación densa de personajes prominentes (*hamlet*, *claudius*, *ghost*, *horatio*, *king*, *queen*, *gertrude*, *polonius*) resalta su prominencia en contextos comunes. Sin embargo, la bidimensionalidad impone limitaciones, con algunas palabras clave apareciendo más aisladas.
 
-#### Gráfico *t-sne* 2d
-La proyección 2d muestra una organización general útil para captar agrupaciones temáticas, aunque con cierto solapamiento en regiones de alta densidad. Una agrupación densa en la parte superior derecha incluye a personajes prominentes (`hamlet`, `claudius`, `ghost`, `horatio`, `king`, `queen`, `gertrude`, `polonius`), resaltando su prominencia en contextos comunes. Sin embargo, la bidimensionalidad impone limitaciones: palabras clave como `himselfe`, `ere`, `grace` o `sword` aparecen más aisladas, y las conexiones entre capas semánticas intermedias son difíciles de observar.
+#### Gráfico *t-SNE* 3D
+Las visualizaciones tridimensionales ofrecen una representación más rica y matizada. Los clústeres observados en 2D se reafirman y organizan de manera más coherente. Se revelan subestructuras no evidentes en 2D: términos como *madness*, *death*, *revenge* y *father* parecen formar un subclúster temático. Palabras que parecían aisladas en 2D se integran de manera más natural.
 
-#### Gráfico *t-sne* 3d
-Las visualizaciones tridimensionales ofrecen una representación más rica y matizada del espacio semántico. En el gráfico 3d, los clústeres observados en la vista 2d se reafirman, pero se organizan de manera más coherente, a menudo formando una estructura esférica clara que indica una fuerte cohesión semántica local. Además, se revelan subestructuras no evidentes en 2d: términos como `madness`, `death`, `revenge` y `father` parecen formar un subclúster temático que representa la trama psicológica de la obra. Palabras que parecían aisladas en la vista 2d se integran de manera más natural, sugiriendo que su aparente separación era un artefacto de la reducción bidimensional. En conjunto, las vistas 3d no solo confirman agrupaciones semánticas esperadas, sino que revelan gradientes y transiciones contextuales que aportan una capa adicional de interpretabilidad.
+## Conclusiones del Desafío
+Este desafío ha demostrado la capacidad de los *Word Embeddings* generados con *Word2Vec* para capturar las relaciones semánticas dentro de un corpus literario específico como "Hamlet". Se cumplieron los objetivos del desafío al crear *embeddings* propios, probar términos y explicar similitudes, graficar los *embeddings* y obtener conclusiones. No obstante, a pesar de las limitaciones observadas en las pruebas de analogía (atribuibles a la especificidad del corpus), la riqueza de las relaciones contextuales capturadas justifica el enfoque de *Word Embeddings* para la exploración semántica de obras literarias específicas.
 
-## Dependencias
-
-Las principales dependencias utilizadas en este proyecto son:
-
-* **Python 3.x**
-* **NLTK**: para tokenización de texto, lematización y *stopwords*.
-* **Gensim**: para el entrenamiento del modelo *word2vec*.
-* **NumPy**: para operaciones numéricas, especialmente con vectores.
-* **Pandas**: para manipulación de datos (aunque no se usa intensamente para operaciones de *dataframe*, a menudo se usa implícitamente por otras librerías).
-* **Scikit-learn**: específicamente para `tsne` para la reducción de dimensionalidad.
-* **Plotly**: para visualizaciones de datos interactivas (diagramas de dispersión 2d y 3d).
-* **TensorFlow** y **Keras**: aunque listadas en los comandos iniciales de `pip`, no se usan directamente para el modelo *word2vec* en sí, pero pueden estar presentes en el entorno de *colab* y su compatibilidad con *numpy* se gestiona.
