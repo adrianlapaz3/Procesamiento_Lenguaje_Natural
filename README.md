@@ -59,6 +59,8 @@ La **similaridad del coseno** es útil para la exploración temática, pero los 
 
 # Desafío 2: *Word Embeddings* para *Hamlet* de Shakespeare
 
+[Archivo original en Colab](https://colab.research.google.com/drive/1-3nsIWYq2D5WzH5Ume3_fTlERh8xvQrz?usp=sharing#scrollTo=leSnYEBkCsii)
+
 El objetivo principal de este desafío es explorar las relaciones semánticas dentro del texto de "Hamlet" aplicando *Word2Vec*, una popular técnica de *Word Embeddings*. El *notebook* guía a través de los siguientes pasos:
 
 - **Extracción y preprocesamiento de texto**: aislamiento del diálogo de la versión del corpus *Gutenberg* de "Hamlet", limpieza del texto y aplicación de tokenización, lematización y eliminación de *stopwords*.
@@ -130,10 +132,10 @@ Las pruebas de analogía (*king* - *man* + *woman* $\approx$ *queen* y *laertes*
 
 ### Visualizaciones *t-SNE* de *Embeddings*
 
-#### Gráfico *t-SNE* 2D
+#### Gráfico *t-SNE* 2D (ver en [Archivo original en Colab])
 La proyección 2D muestra agrupaciones temáticas, con cierto solapamiento. Una agrupación densa de personajes prominentes (*hamlet*, *claudius*, *ghost*, *horatio*, *king*, *queen*, *gertrude*, *polonius*) resalta su prominencia en contextos comunes. Sin embargo, la bidimensionalidad impone limitaciones, con algunas palabras clave apareciendo más aisladas.
 
-#### Gráfico *t-SNE* 3D
+#### Gráfico *t-SNE* 3D (ver en [Archivo original en Colab])
 Las visualizaciones tridimensionales ofrecen una representación más rica y matizada. Los clústeres observados en 2D se reafirman y organizan de manera más coherente. Se revelan subestructuras no evidentes en 2D: términos como *madness*, *death*, *revenge* y *father* parecen formar un subclúster temático. Palabras que parecían aisladas en 2D se integran de manera más natural.
 
 ## Conclusiones del Desafío
