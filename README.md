@@ -140,5 +140,5 @@ La proyección 2D muestra agrupaciones temáticas, con cierto solapamiento. Una 
 Las visualizaciones tridimensionales ofrecen una representación más rica y matizada. Los clústeres observados en 2D se reafirman y organizan de manera más coherente. Se revelan subestructuras no evidentes en 2D: términos como *madness*, *death*, *revenge* y *father* parecen formar un subclúster temático. Palabras que parecían aisladas en 2D se integran de manera más natural.
 ![Gráfico t-SNE 3D](Desafio_2/Figuras/t-SNE%203D.png)
 
-## Conclusiones del Desafío
+## Conclusiones del desafío 2
 Este desafío ha demostrado la capacidad de los *Word Embeddings* generados con *Word2Vec* para capturar las relaciones semánticas dentro de un corpus literario específico como "Hamlet". Se cumplieron los objetivos del desafío al crear *embeddings* propios, probar términos y explicar similitudes, graficar los *embeddings* y obtener conclusiones. No obstante, a pesar de las limitaciones observadas en las pruebas de analogía (atribuibles a la especificidad del corpus), la riqueza de las relaciones contextuales capturadas justifica el enfoque de *Word Embeddings* para la exploración semántica de obras literarias específicas.
