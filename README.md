@@ -57,7 +57,7 @@ La **similaridad del coseno** es útil para la exploración temática, pero los 
 ---
 ---
 
-# Desafío 2: Word Embeddings para *Hamlet* de Shakespeare
+# Desafío 2: *Word Embeddings* para *Hamlet* de Shakespeare
 
 El objetivo principal de este desafío es explorar las relaciones semánticas dentro del texto de "Hamlet" aplicando *Word2Vec*, una popular técnica de *Word Embeddings*. El *notebook* guía a través de los siguientes pasos:
 
