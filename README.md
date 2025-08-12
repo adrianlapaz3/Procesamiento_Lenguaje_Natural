@@ -261,13 +261,13 @@ to the the the the
 **Temp = 0.5:** más variedad pero aún con repeticiones.  
 Ejemplo (GRU - future researchs should...):
 ```
-*future researchs should of the problem of the results in the problems of the problem and the computation...*
+future researchs should of the problem of the results in the problems of the problem and the computation...
 ```
 
 **Temp = 1.5:** mayor creatividad; SimpleRNN incoherente, GRU y LSTM equilibrados.  
 Ejemplo (GRU - future researchs should...):
 ```
-*future researchs should a related and dependent the clearning computer and the frameworks...*
+future researchs should a related and dependent the clearning computer and the frameworks...
 ```
 
 ---
