@@ -29,8 +29,7 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
 
 Para este trabajo:
-- Se seleccionaron **500 artículos**.
-- De cada una de las **cuatro categorías dominantes** se tomaron los **25 resúmenes más extensos**.
+- Se seleccionaron los **25 resúmenes más extensos** de cada una de las **cuatro categorías dominantes**.
 - Los resúmenes fueron compilados en un único texto continuo para su análisis.
 
 **Figura 1.** Top 15 categorías más frecuentes.  
