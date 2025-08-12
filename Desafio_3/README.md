@@ -95,7 +95,7 @@ Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
 ### 3.2. Callbacks
 Se empleó un *callback* personalizado (`./src/callbacks.py`) para:
 
-- **Perplejidad:** calculada al final de cada época sobre validación:
+- **Perplejidad:** calculada al final de cada época sobre validación:\
 
 $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w_{<i})\right)$$
 
