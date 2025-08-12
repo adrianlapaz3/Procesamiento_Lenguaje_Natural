@@ -18,7 +18,7 @@ Se utilizó un corpus de texto creado a partir de un subconjunto del "ArXiv Scie
 Como se muestra en la figura 1, las categorías dominantes en el corpus seleccionado son Machine Learning, Computer Vision and Pattern Recognition, Computation and Language (Natural Language Processing) y Artificial Intelligence. La categoría Machine Learning (Statistics) fue recategorizada a Machine Learning para unificar los datos.
 
 **Figura 2.** Cantidad de palabras según las categorías seleccionadas [cite: 4_modelo_lenguaje_char.ipynb].
-![Palabras por categoría](top_categories_words_sum.png)
+![Palabras por categoría](./figures/top_categories_words_sum.png)
 
 La figura 2 muestra que el corpus final tiene una distribución uniforme de la cantidad de palabras entre las cuatro categorías seleccionadas, lo que ayuda a evitar un sesgo significativo del modelo hacia una sola disciplina. El vocabulario resultante tiene un total de 68 caracteres únicos, y se observó la presencia de términos específicos como *xgboost*, que son representativos de las disciplinas del corpus.
 
@@ -63,7 +63,7 @@ $$$$
 La figura 3 muestra la comparación de las métricas de rendimiento durante el entrenamiento.
 
 **Figura 3.** Estadísticas de los modelos en función de las épocas de entrenamiento [cite: model_comparison.png].
-![Comparación de modelos](model_comparison.png)
+![Comparación de modelos](figures/model_comparison.png)
 
 *SimpleRNN* mostró el peor desempeño, estabilizándose con valores de loss y perplejidad significativamente más altos, lo que confirma su limitación para manejar dependencias de largo plazo.
 
