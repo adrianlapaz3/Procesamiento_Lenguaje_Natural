@@ -21,35 +21,18 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 ----
 
 ## Metodología propuesta
-## [1. Selección del corpus](#mp-1-seleccion-del-corpus)
-Se seleccionó un corpus textual representativo del dominio de interés, con variabilidad léxica y sintáctica suficiente para generalizar.
-
-## [2. Preprocesamiento del texto](#mp-2-preprocesamiento-del-texto)
-- Conversión a minúsculas.  
-- Tokenización carácter a carácter.  
-- Codificación de caracteres mediante índices enteros.  
-- Secuencias de longitud fija.  
-- División en entrenamiento y validación.
-
-## [3. Diseño del modelo](#mp-3-diseno-del-modelo)
-Se evaluaron **SimpleRNN**, **LSTM** y **GRU**, con proyecciones y activaciones adecuadas; la entrada se representó con *one-hot* o *embedding* según la variante.
-
-## [4. Entrenamiento](#mp-4-entrenamiento)
-Optimización con **RMSprop** y control con **perplejidad** vía *callback* específico y **early stopping**.
-
-## [5. Generación de texto](#mp-5-generacion-de-texto)
-- **Greedy search**: selecciona el carácter más probable.  
-- **Beam search determinista**: explora trayectorias y mantiene los mejores candidatos.  
-- **Beam search estocástico**: incorpora muestreo con **temperatura** para controlar diversidad y coherencia.
-
-## [6. Conclusiones](#mp-6-conclusiones)
-Se elaboraron conclusiones en función del comportamiento observado en entrenamiento y generación.
+## [1. Selección del corpus](#1-seleccion-del-corpus)
+## [2. Preprocesamiento del texto](#2-preprocesamiento-del-texto)
+## [3. Diseño del modelo](#3-diseno-del-modelo)
+## [4. Entrenamiento](#4-entrenamiento)
+## [5. Generación de texto](#5-generacion-de-texto)
+## [6. Conclusiones](#6-conclusiones)
 
 ---
 
 ---
 
-## [1. Selección del corpus](#mp-1-seleccion-del-corpus)
+## [1. Selección del corpus](#1-seleccion-del-corpus)
 Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
 
 Para este trabajo:
@@ -65,7 +48,7 @@ Para este trabajo:
 
 ---
 
-## [2. Preprocesamiento del texto](#mp-2-preprocesamiento-del-texto)
+## [2. Preprocesamiento del texto](#2-preprocesamiento-del-texto)
 El corpus fue normalizado y tokenizado carácter a carácter:
 
 1. Conversión a minúsculas.  
@@ -78,7 +61,7 @@ El corpus fue normalizado y tokenizado carácter a carácter:
 
 ---
 
-## [3. Diseño del modelo](#mp-3-diseno-del-modelo)
+## [3. Diseño del modelo](#3-diseno-del-modelo)
 
 ### 3.1. Modelos
 Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
@@ -103,7 +86,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-## [4. Entrenamiento](#mp-4-entrenamiento)
+## [4. Entrenamiento](#4-entrenamiento)
 
 **Figura 3.** Comparación de modelos durante el entrenamiento.  
 ![Comparación de modelos](./figures/model_comparison.png)
@@ -114,7 +97,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-## [5. Generación de texto](#mp-5-generacion-de-texto)
+## [5. Generación de texto](#5-generacion-de-texto)
 Se utilizó `./src/text_generator.py` para generar texto desde frases iniciales (*prompts*) como:
 
 - `recurrent neural network`  
@@ -151,7 +134,7 @@ future researchs should a related and dependent the clearning computer and the f
 
 ---
 
-## [6. Conclusiones](#mp-6-conclusiones)
+## [6. Conclusiones](#6-conclusiones)
 - **GRU** y **LSTM** superan claramente a **SimpleRNN** en la gestión de dependencias largas.  
 - La mejor combinación fue **GRU + Beam Search Estocástico + Temp = 1.5**, logrando un balance entre coherencia y creatividad.  
 - El modelado carácter a carácter presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
