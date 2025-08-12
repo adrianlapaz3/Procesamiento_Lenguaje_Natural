@@ -1,5 +1,5 @@
 ## ADRIÁN LAPAZ (1706)
-# Desafío 1 
+# Desafío 1: calsificación de texto
 
 Este desafio aborda un desafío de Procesamiento del Lenguaje Natural (PLN) utilizando el conjunto de datos **20 Newsgroups** desde *scikit-learn*. El objetivo es explorar técnicas de vectorización, clasificación de texto y análisis de similaridad semántica entre palabras.
 
@@ -145,32 +145,33 @@ Este desafío ha demostrado la capacidad de los *Word Embeddings* generados con 
 
 ---
 ---
-## Desafío 3 – Modelado de lenguaje a nivel de caracteres
+## Desafío 3: modelado de lenguaje a nivel de caracteres
+
 ---
 
-#### Consigna
+### Consigna
 - Seleccionar un corpus de texto sobre el cual entrenar el modelo de lenguaje.
 - Realizar el pre-procesamiento adecuado para tokenizar el corpus, estructurar el dataset y separar entre datos de entrenamiento y validación.
 - Proponer arquitecturas de redes neuronales basadas en unidades recurrentes para implementar un modelo de lenguaje.
 - Con el o los modelos que consideren adecuados, generar nuevas secuencias a partir de secuencias de contexto con las estrategias de greedy search y beam search determinístico y estocástico. En este último caso observar el efecto de la temperatura en la generación de secuencias.
 
-#### Sugerencias
+### Sugerencias
 - Durante el entrenamiento, guiarse por el descenso de la perplejidad en los datos de validación para finalizar el entrenamiento. Para ello se provee un callback.
 - Explorar utilizar SimpleRNN (celda de Elman), LSTM y GRU.
 - *rmsprop* es el optimizador recomendado para la buena convergencia. No obstante se pueden explorar otros.
 
 ---
 
-#### Objetivo
+### Objetivo
 Entrenar y comparar modelos de lenguaje carácter a carácter (**SimpleRNN**, **GRU** y **LSTM**) para predecir el siguiente carácter en una secuencia y generar nuevo texto.  
 Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la coherencia y diversidad del texto generado.
 
 ----
 
-#### Metodología propuesta
+### Metodología propuesta
 
 ---
-###### 1. Selección del corpus
+#### 1. Selección del corpus
 Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
 
 Para este trabajo:
@@ -186,7 +187,7 @@ Para este trabajo:
 
 ---
 
-###### 2. Preprocesamiento del texto
+#### 2. Preprocesamiento del texto
 El corpus fue normalizado y tokenizado carácter a carácter:
 
 1. Conversión a minúsculas.  
@@ -199,10 +200,10 @@ El corpus fue normalizado y tokenizado carácter a carácter:
 
 ---
 
-###### 3. Diseño del modelo
+#### 3. Diseño del modelo
 
-######## 3.1. Modelos
-Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
+##### 3.1. Modelos
+Se implementaron tres variantes de redes recurrentes (`./Desafio_3/src/architectures.py`):
 
 - **SimpleRNN:** entrada *one-hot*, capa recurrente `SimpleRNN` y capa `Dense`.  
 - **GRU:** capa `Embedding`, dos capas `GRU` y salida `Dense`.  
@@ -213,8 +214,8 @@ Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
 - Pérdida: *Categorical Crossentropy*.  
 - Métrica adicional: *Perplejidad*.
 
-######## 3.2. Callbacks
-Se empleó un *callback* personalizado (`./src/callbacks.py`) para:
+##### 3.2. Callbacks
+Se empleó un *callback* personalizado (`./Desafio_3/src/callbacks.py`) para:
 
 - **Perplejidad:** calculada al final de cada época sobre validación:\
 $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w_{<i})\right)$$
@@ -224,7 +225,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-###### 4. Entrenamiento
+#### 4. Entrenamiento
 
 **Figura 3.** Comparación de modelos durante el entrenamiento.  
 ![Comparación de modelos](./Desafio_3/figures/model_comparison.png)
@@ -235,7 +236,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-###### 5. Generación de texto
+#### 5. Generación de texto
 Se utilizó `./src/text_generator.py` para generar texto desde frases iniciales (*prompts*) como:
 
 - `recurrent neural network`  
@@ -244,7 +245,7 @@ Se utilizó `./src/text_generator.py` para generar texto desde frases iniciales 
 
 **Estrategias**
 
-######## Greedy Search (*temp = 0*)
+##### Greedy Search (*temp = 0*)
 Texto repetitivo y predecible.
 
 **Ejemplo (GRU/LSTM):**
@@ -257,24 +258,25 @@ of the probability of the probability
 to the the the the
 ```
 
-######## Beam Search Estocástico
+##### Beam Search Estocástico
 **Temp = 0.5:** más variedad pero aún con repeticiones.  
 Ejemplo (GRU - future researchs should...):
 ```
-future researchs should of the problem of the results in the problems of the problem and the computation...
+*future researchs should of the problem of the results in the problems of the problem and the computation...*
 ```
 
 **Temp = 1.5:** mayor creatividad; SimpleRNN incoherente, GRU y LSTM equilibrados.  
 Ejemplo (GRU - future researchs should...):
 ```
-future researchs should a related and dependent the clearning computer and the frameworks...
+*future researchs should a related and dependent the clearning computer and the frameworks...*
 ```
 
 ---
 
-###### 6. Conclusiones
+#### 6. Conclusiones
 - **GRU** y **LSTM** superan claramente a **SimpleRNN** en la gestión de dependencias largas.  
 - La mejor combinación fue **GRU + Beam Search Estocástico + Temp = 1.5**, logrando un balance entre coherencia y creatividad.  
 - El modelado carácter a carácter presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
 
 ---
+
