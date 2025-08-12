@@ -13,11 +13,13 @@ Se utilizó un corpus de texto creado a partir de un subconjunto del "ArXiv Scie
 
 ## Exploración del corpus
 **Figura 1.** Top 15 categorías más frecuentes en el dataset [cite: 4_modelo_lenguaje_char.ipynb].
-![Top 15 categorías](top15_categories_hist.png)
+
+![Top 15 categorías](./figures/top15_categories_hist.png)
 
 Como se muestra en la figura 1, las categorías dominantes en el corpus seleccionado son Machine Learning, Computer Vision and Pattern Recognition, Computation and Language (Natural Language Processing) y Artificial Intelligence. La categoría Machine Learning (Statistics) fue recategorizada a Machine Learning para unificar los datos.
 
 **Figura 2.** Cantidad de palabras según las categorías seleccionadas [cite: 4_modelo_lenguaje_char.ipynb].
+
 ![Palabras por categoría](./figures/top_categories_words_sum.png)
 
 La figura 2 muestra que el corpus final tiene una distribución uniforme de la cantidad de palabras entre las cuatro categorías seleccionadas, lo que ayuda a evitar un sesgo significativo del modelo hacia una sola disciplina. El vocabulario resultante tiene un total de 68 caracteres únicos, y se observó la presencia de términos específicos como *xgboost*, que son representativos de las disciplinas del corpus.
@@ -49,9 +51,7 @@ Para monitorear y controlar el entrenamiento, se usó un callback personalizado 
 
 Perplejidad: A diferencia de la métrica loss, se calculó la perplejidad al final de cada época sobre el conjunto de validación para una medición más precisa del rendimiento del modelo de lenguaje. La perplejidad se calcula con la fórmula:
 
-$$$$
-\\mathrm{PPL}(X) = \\exp\\left( -\\frac{1}{t} \\sum\_{i=1}^{t} \\log p\_{\\theta}\\left( w\_i \\middle| w\_{\<i} \\right) \\right)
-$$$$
+$$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^t\log p_{\theta}(w_i \mid w_{<i})\right)$$
 
 **Early stopping:** El entrenamiento se detiene si la perplejidad en el conjunto de validación no mejora durante un número predefinido de épocas (patience=3).
 
@@ -63,7 +63,8 @@ $$$$
 La figura 3 muestra la comparación de las métricas de rendimiento durante el entrenamiento.
 
 **Figura 3.** Estadísticas de los modelos en función de las épocas de entrenamiento [cite: model_comparison.png].
-![Comparación de modelos](figures/model_comparison.png)
+
+![Comparación de modelos](./figures/model_comparison.png)
 
 *SimpleRNN* mostró el peor desempeño, estabilizándose con valores de loss y perplejidad significativamente más altos, lo que confirma su limitación para manejar dependencias de largo plazo.
 
