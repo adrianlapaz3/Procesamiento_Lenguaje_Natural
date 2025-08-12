@@ -175,8 +175,7 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
 
 Para este trabajo:
-- Se seleccionaron **500 artículos**.
-- De cada una de las **cuatro categorías dominantes** se tomaron los **25 resúmenes más extensos**.
+- Se seleccionaron los **25 resúmenes más extensos** de cada una de las **cuatro categorías dominantes**.
 - Los resúmenes fueron compilados en un único texto continuo para su análisis.
 
 **Figura 1.** Top 15 categorías más frecuentes.  
@@ -276,7 +275,7 @@ future researchs should a related and dependent the clearning computer and the f
 #### 6. Conclusiones
 - **GRU** y **LSTM** superan claramente a **SimpleRNN** en la gestión de dependencias largas.  
 - La mejor combinación fue **GRU + Beam Search Estocástico + Temp = 1.5**, logrando un balance entre coherencia y creatividad.  
-- El modelado carácter a carácter presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
+- El modelado *many-to-many* presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
 
 ---
 
