@@ -1,91 +1,83 @@
 # Desafíio 3
 ---
-## Modelo de lenguaje a nivel de caracteres – Comparación entre SimpleRNN, GRU y LSTM
-Este proyecto desarrolla y compara modelos de lenguaje carácter a carácter usando redes neuronales recurrentes (*RNN*), como *SimpleRNN*, *GRU* y *LSTM*. Se entrena sobre un corpus de resúmenes de artículos científicos, midiendo métricas como accuracy, loss y perplejidad para evaluar el rendimiento, y generando texto con diferentes estrategias de decodificación para analizar la coherencia y diversidad del texto. El proyecto busca determinar la arquitectura y la estrategia de generación más adecuadas para esta tarea, concluyendo que el modelado a nivel de carácter es poco efectivo para generar texto coherente en este dominio.
+### Consigna
+- Seleccionar un corpus de texto sobre el cual entrenar el modelo de lenguaje.
+- Realizar el pre-procesamiento adecuado para tokenizar el corpus, estructurar el dataset y separar entre datos de entrenamiento y validación.
+- Proponer arquitecturas de redes neuronales basadas en unidades recurrentes para implementar un modelo de lenguaje.
+- Con el o los modelos que consideren adecuados, generar nuevas secuencias a partir de secuencias de contexto con las estrategias de greedy search y beam search determístico y estocástico. En este último caso observar el efecto de la temperatura en la generación de secuencias.
+
+
+### Sugerencias
+- Durante el entrenamiento, guiarse por el descenso de la perplejidad en los datos de validación para finalizar el entrenamiento. Para ello se provee un callback.
+- Explorar utilizar SimpleRNN (celda de Elman), LSTM y GRU.
+- rmsprop es el optimizador recomendado para la buena convergencia. No obstante se pueden explorar otros.
+---
+
+# **Desafío 3**
+
+## **Metodología propuesta**
+
+### 1. Selección del corpus
+Se utilizó el **ArXiv Scientific Research Papers Dataset** de Kaggle. El corpus se construyó a partir de los 25 resúmenes más extensos de las cuatro categorías con más artículos:
+* **Machine Learning**
+* **Computer Vision and Pattern Recognition**
+* **Computation and Language (Natural Language Processing)**
+* **Artificial Intelligence**
+
+Se unificó la categoría **Machine Learning (Statistics)** en **Machine Learning**. La distribución de palabras por categoría es uniforme, lo que ayuda a evitar sesgos en el modelo.
 
 ---
-## Objetivo
-Entrenar modelos de lenguaje a nivel de carácter para predecir el siguiente carácter en una secuencia de texto y generar nuevas secuencias. Se evalúa cómo la arquitectura de la red y las estrategias de decodificación afectan la coherencia y diversidad del texto generado.
+
+### 2. Preprocesamiento del texto
+El texto fue preprocesado para ser apto para el entrenamiento del modelo a nivel de carácter.
+
+* **Construcción del vocabulario**: Se extrajeron todos los caracteres únicos del corpus y se convirtieron a minúsculas. Se crearon dos diccionarios: **`char2idx`** para mapear caracteres a índices numéricos y **`idx2char`** para la conversión inversa. El vocabulario resultante contiene 68 caracteres únicos.
+* **Tokenización**: El corpus se convirtió en una secuencia de índices numéricos.
+* **División del dataset y creación de secuencias**: Se usó el 90% del corpus para entrenamiento y el 10% restante para validación. La longitud del contexto se fijó en 100 caracteres.
+    * **Entrenamiento**: Se utilizó una ventana deslizante con un `stride` de 1 para crear secuencias superpuestas, lo que permitió al modelo aprender de múltiples contextos similares.
+    * **Validación**: Se crearon bloques consecutivos de 100 caracteres sin superposición para una evaluación objetiva.
+    * **Estructura de datos**: Se implementó un esquema `many-to-many`, donde cada secuencia de entrada ($X$) se emparejó con una secuencia de salida ($y$) que consistía en la misma secuencia de entrada desplazada un carácter hacia adelante.
 
 ---
-## Descripción y análisis del Corpus
-Se utilizó un corpus de texto creado a partir de un subconjunto del "ArXiv Scientific Research Papers Dataset". Para ello, se seleccionaron aleatoriamente 500 artículos del conjunto de datos original. De estos, se tomaron los 25 resúmenes más extensos de cada una de las cuatro categorías dominantes para compilar un texto continuo.
 
-## Exploración del corpus
-**Figura 1.** Top 15 categorías más frecuentes en el dataset [cite: 4_modelo_lenguaje_char.ipynb].
+### 3. Diseño del modelo
+Se evaluaron tres arquitecturas de redes neuronales recurrentes clásicas.
 
-![Top 15 categorías](./figures/top15_categories_hist.png)
-
-Como se muestra en la figura 1, las categorías dominantes en el corpus seleccionado son Machine Learning, Computer Vision and Pattern Recognition, Computation and Language (Natural Language Processing) y Artificial Intelligence. La categoría Machine Learning (Statistics) fue recategorizada a Machine Learning para unificar los datos.
-
-**Figura 2.** Cantidad de palabras según las categorías seleccionadas [cite: 4_modelo_lenguaje_char.ipynb].
-
-![Palabras por categoría](./figures/top_categories_words_sum.png)
-
-La figura 2 muestra que el corpus final tiene una distribución uniforme de la cantidad de palabras entre las cuatro categorías seleccionadas, lo que ayuda a evitar un sesgo significativo del modelo hacia una sola disciplina. El vocabulario resultante tiene un total de 68 caracteres únicos, y se observó la presencia de términos específicos como *xgboost*, que son representativos de las disciplinas del corpus.
+* **SimpleRNN**: Utiliza la codificación `one-hot` para la representación de los caracteres de entrada, seguida de una capa `SimpleRNN` y una capa `Dense` para la predicción de la salida.
+* **GRU y LSTM**: Estas arquitecturas, a diferencia de la `SimpleRNN`, usan una capa `Embedding` para la representación de caracteres, seguida de dos capas recurrentes (`GRU` o `LSTM`) y capas `Dense` para la salida.
 
 ---
-## Metodología
-### Preprocesamiento y estructuración del texto
-El corpus de texto se preprocesó y estructuró para el entrenamiento de los modelos.
 
-**Tokenización:** Cada carácter del texto fue mapeado a un índice numérico único utilizando un diccionario llamado char2idx, y su inverso, idx2char, para la decodificación. Estos diccionarios se guardaron posteriormente en la carpeta models como archivos JSON (*char2idx.json* y *idx2char.json*).
+### 4. Entrenamiento
+El entrenamiento se guió por el descenso de la perplejidad. Para ello, se desarrolló un **`Callback ad-hoc`** que implementó:
 
-**Secuenciación de datos:** Se definió un tamaño de contexto de 100 caracteres (*max_context_size*).
-
-**Conjunto de entrenamiento:** Se usó una ventana deslizante con stride=1 para generar secuencias superpuestas de entrada y salida, permitiendo que la red aprenda a predecir el siguiente carácter en cada paso de la secuencia.
-
-**Conjunto de validación:** Se reservó el 10% final del corpus para la validación, creando bloques de 100 caracteres sin superposición para una evaluación objetiva.
-
-### Diseño de arquitecturas
-Se implementaron y compararon tres arquitecturas de redes recurrentes, definidas en el script architectures.py dentro de la carpeta src.
-
-**SimpleRNN:** Utiliza la codificación one-hot para la representación de los caracteres de entrada, seguida de una capa SimpleRNN y una capa Dense para la predicción de la salida.
-
-**GRU y LSTM:** Estas arquitecturas, a diferencia de la *SimpleRNN*, utilizan una capa de Embedding para la representación de los caracteres, seguida de dos capas recurrentes (*GRU* o *LSTM*) y capas Dense para la salida.
-
-El entrenamiento se configuró para usar el optimizador *RMSprop* con una tasa de aprendizaje de 0.001.
-
-### Callback para entrenamiento##
-Para monitorear y controlar el entrenamiento, se usó un callback personalizado llamado PplCallback (definido en callbacks.py), el cual implementa:
-
-Perplejidad: A diferencia de la métrica loss, se calculó la perplejidad al final de cada época sobre el conjunto de validación para una medición más precisa del rendimiento del modelo de lenguaje. La perplejidad se calcula con la fórmula:
-
-$$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^t\log p_{\theta}(w_i \mid w_{<i})\right)$$
-
-**Early stopping:** El entrenamiento se detiene si la perplejidad en el conjunto de validación no mejora durante un número predefinido de épocas (patience=3).
-
-**Guardado del modelo:** El modelo con la mejor perplejidad en validación se guarda automáticamente en la carpeta models.
+* **Perplejidad**: A diferencia de la pérdida de entropía cruzada, la perplejidad ofrece una medida más intuitiva del rendimiento del modelo de lenguaje, calculándose con la siguiente fórmula:
+    $$
+    \mathrm{PPL}(X) = \exp\left( -\\frac{1}{t} \\sum_{i=1}^{t} \\log p_{\\theta}\\left( w_i \\,\\middle|\\, w_{<i} \\right) \\right)
+    $$
+    Este enfoque proporcionó un criterio robusto para evaluar la capacidad de generalización del modelo.
+* **Early Stopping**: El entrenamiento se detuvo si la perplejidad en el conjunto de validación no mejoraba después de un número predefinido de épocas (`patience=3`), lo que evitó el sobreajuste.
+* **Persistencia del modelo**: El modelo con la menor perplejidad de validación se guardó automáticamente.
 
 ---
-## Resultados
-### Rendimiento de las arquitecturas
-La figura 3 muestra la comparación de las métricas de rendimiento durante el entrenamiento.
 
-**Figura 3.** Estadísticas de los modelos en función de las épocas de entrenamiento [cite: model_comparison.png].
+### 5. Generación de texto
+Se utilizaron los modelos entrenados para generar nuevas secuencias a partir de tres textos semilla:
+* "recurrent neural network"
+* "convolutional neural network"
+* "future researchs should"
 
-![Comparación de modelos](./figures/model_comparison.png)
+Se aplicaron distintas estrategias de decodificación.
 
-*SimpleRNN* mostró el peor desempeño, estabilizándose con valores de loss y perplejidad significativamente más altos, lo que confirma su limitación para manejar dependencias de largo plazo.
-
-*GRU* presentó el mejor desempeño, alcanzando la menor perplejidad en validación, sugiriendo una mejor capacidad para generalizar con este corpus.
-
-*LSTM* también tuvo un buen rendimiento, pero mostró indicios de overfitting a partir de la época 10, donde su perplejidad en validación comenzó a aumentar mientras que el accuracy de entrenamiento seguía mejorando.
-
-
-### Ejemplos de generación de texto
-Se utilizó el script text_generator.py para generar texto a partir de las frases iniciales *recurrent neural network*, *convolutional neural network* y *future researchs should*.
-
-Generación por Greedy Search (temperatura=0)
-Esta estrategia, que selecciona el carácter con mayor probabilidad en cada paso, resultó en secuencias altamente repetitivas y predecibles, como "of the probability of the probability" en los modelos GRU y LSTM, y "to the the the the" en el modelo SimpleRNN [cite: 4_modelo_lenguaje_char.ipynb].
-
-Generación por Beam Search estocástico
-**Temperatura baja (TEMP=0.5):** La calidad del texto mejoró, mostrando más variedad de palabras, aunque aún con repeticiones. Por ejemplo, el modelo *GRU* generó la secuencia "future researchs should of the problem of the results in the problems of the problem and the computation of the computation" [cite: 4_modelo_lenguaje_char.ipynb].
-
-**Temperatura alta (TEMP=1.5):** La *SimpleRNN* generó texto caótico e incoherente, con palabras inexistentes. En cambio, los modelos *GRU* y *LSTM* mostraron una gran creatividad y coherencia. Por ejemplo, el modelo *GRU* generó: "future researchs should a related and dependent the clearning computer and the frameworks where the distrated to the propos" [cite: 4_modelo_lenguaje_char.ipynb].
+* **Greedy Search (determinista)**: Esta estrategia, que selecciona el carácter con mayor probabilidad en cada paso (`temperatura=0`), resultó en secuencias altamente repetitivas y predecibles, como "of the probability of the probability" en los modelos GRU y LSTM, y "to the the the the" en el modelo SimpleRNN.
+* **Beam Search (estocástico)**: Se incorporó muestreo probabilístico controlado por la temperatura.
+    * **Temperatura baja (`TEMP=0.5`)**: La calidad del texto mejoró con más variedad, aunque se mantuvieron algunas repeticiones. Por ejemplo, el modelo `GRU` generó la secuencia "future researchs should of the problem of the results in the problems of the problem and the computation of the computation".
+    * **Temperatura alta (`TEMP=1.5`)**: El texto de la `SimpleRNN` fue caótico e incoherente, con palabras inexistentes. En cambio, los modelos `GRU` y `LSTM` mostraron un equilibrio entre coherencia y creatividad. Por ejemplo, el modelo `GRU` generó: "future researchs should a related and dependent the clearning computer and the frameworks where the distrated to the propos".
 
 ---
-## Conclusiones
-La elección de la arquitectura es crucial, siendo GRU y LSTM las más adecuadas para modelar este tipo de texto, superando a SimpleRNN en la gestión de dependencias largas [cite: 4_modelo_lenguaje_char.ipynb]. El modelo GRU fue el más eficiente y el de mejor rendimiento.
 
-La estrategia de decodificación más eficaz fue el Beam Search estocástico con una temperatura alta, ya que logró un equilibrio óptimo entre la coherencia y la creatividad del texto generado. Esto subraya la importancia de combinar una arquitectura robusta con una estrategia de decodificación adecuada para obtener resultados de alta calidad [cite: 4_modelo_lenguaje_char.ipynb].
+### 6. Conclusiones
+
+La elección de la arquitectura del modelo es crucial. Los modelos `GRU` y `LSTM` superaron a `SimpleRNN` en rendimiento y capacidad para gestionar dependencias a largo plazo. El modelo `GRU` fue el más eficaz con este corpus, alcanzando la menor perplejidad. El `LSTM`, aunque tuvo un buen desempeño, mostró señales de sobreajuste.
+
+La estrategia de decodificación más efectiva fue el **Beam Search estocástico con una temperatura alta**, ya que logró un equilibrio óptimo entre la coherencia y la creatividad en el texto generado. Esto subraya la importancia de combinar una arquitectura robusta con una estrategia de decodificación adecuada para obtener resultados de alta calidad.
