@@ -32,7 +32,7 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 
 ---
 
-## [1. Selección del corpus](#1-seleccion-del-corpus)
+## 1. Selección del corpus
 Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
 
 Para este trabajo:
@@ -48,7 +48,7 @@ Para este trabajo:
 
 ---
 
-## [2. Preprocesamiento del texto](#2-preprocesamiento-del-texto)
+## 2. Preprocesamiento del texto
 El corpus fue normalizado y tokenizado carácter a carácter:
 
 1. Conversión a minúsculas.  
@@ -61,7 +61,7 @@ El corpus fue normalizado y tokenizado carácter a carácter:
 
 ---
 
-## [3. Diseño del modelo](#3-diseno-del-modelo)
+## 3. Diseño del modelo
 
 ### 3.1. Modelos
 Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
@@ -86,7 +86,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-## [4. Entrenamiento](#4-entrenamiento)
+## 4. Entrenamiento
 
 **Figura 3.** Comparación de modelos durante el entrenamiento.  
 ![Comparación de modelos](./figures/model_comparison.png)
@@ -97,7 +97,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 
 ---
 
-## [5. Generación de texto](#5-generacion-de-texto)
+## 5. Generación de texto
 Se utilizó `./src/text_generator.py` para generar texto desde frases iniciales (*prompts*) como:
 
 - `recurrent neural network`  
@@ -134,7 +134,7 @@ future researchs should a related and dependent the clearning computer and the f
 
 ---
 
-## [6. Conclusiones](#6-conclusiones)
+## 6. Conclusiones
 - **GRU** y **LSTM** superan claramente a **SimpleRNN** en la gestión de dependencias largas.  
 - La mejor combinación fue **GRU + Beam Search Estocástico + Temp = 1.5**, logrando un balance entre coherencia y creatividad.  
 - El modelado carácter a carácter presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
