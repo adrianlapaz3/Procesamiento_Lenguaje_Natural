@@ -26,14 +26,14 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 
 ---
 ### 1. Selección del corpus
-Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
-
-Para este trabajo:
-- Se seleccionaron los **25 resúmenes más extensos** de cada una de las **cuatro categorías dominantes**.
-- Los resúmenes fueron compilados en un único texto continuo para su análisis.
+Se seleccionó el **[ArXiv Scientific Research Papers Dataset](https://www.kaggle.com/datasets/sumitm004/arxiv-scientific-research-papers-dataset)** de Kaggle, un corpus textual representativo del dominio de investigación en inteligencia artificial, aprendizaje automático, informática y matemáticas.  
+Para el entrenamiento, se compilaron en un único texto los 25 resúmenes más extensos de las cuatro categorías con más artículos.  
+Este enfoque aseguró que el corpus fuera representativo y contuviera la variabilidad léxica y sintáctica necesaria para una buena generalización del modelo.
 
 **Figura 1.** Top 15 categorías más frecuentes.  
 ![Top 15 categorías](./figures/top15_categories_hist.png)
+
+Como se muestra en la figura 1, las categorías dominantes en el corpus seleccionado son **Machine Learning**, **Computer Vision and Pattern Recognition**, **Computation and Language (Natural Language Processing)** y **Artificial Intelligence**. La figura 2 muestra que el corpus final tiene una distribución uniforme de la cantidad de palabras entre las cuatro categorías seleccionadas, lo que ayuda a evitar un sesgo significativo del modelo hacia una sola disciplina.
 
 **Figura 2.** Cantidad de palabras por categoría.  
 ![Palabras por categoría](./figures/top_categories_words_sum.png)
