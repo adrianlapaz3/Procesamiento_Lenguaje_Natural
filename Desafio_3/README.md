@@ -17,8 +17,7 @@
 ---
 
 ## Objetivo
-Entrenar y comparar modelos de lenguaje carácter a carácter (**SimpleRNN**, **GRU** y **LSTM**) para predecir el siguiente carácter en una secuencia y generar nuevo texto.  
-Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la coherencia y diversidad del texto generado.
+Entrenar y comparar modelos de lenguaje *many-to-many* (**SimpleRNN**, **GRU** y **LSTM**) para predecir el siguiente carácter en una secuencia y generar nuevo texto, evaluando.
 
 ----
 
