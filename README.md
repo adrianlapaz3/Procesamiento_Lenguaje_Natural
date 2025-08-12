@@ -145,8 +145,8 @@ Este desafío ha demostrado la capacidad de los *Word Embeddings* generados con 
 
 ---
 ---
-## Desafío 3: modelado de lenguaje a nivel de caracteres
 
+## Desafío 3 – Modelado de lenguaje a nivel de caracteres
 ---
 
 ### Consigna
@@ -163,8 +163,7 @@ Este desafío ha demostrado la capacidad de los *Word Embeddings* generados con 
 ---
 
 ### Objetivo
-Entrenar y comparar modelos de lenguaje carácter a carácter (**SimpleRNN**, **GRU** y **LSTM**) para predecir el siguiente carácter en una secuencia y generar nuevo texto.  
-Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la coherencia y diversidad del texto generado.
+Entrenar y comparar modelos de lenguaje *many-to-many* (**SimpleRNN**, **GRU** y **LSTM**) para predecir el siguiente carácter en una secuencia y generar nuevo texto, evaluando.
 
 ----
 
@@ -172,17 +171,17 @@ Se evalúa cómo la arquitectura y las estrategias de decodificación afectan la
 
 ---
 #### 1. Selección del corpus
-Se utilizó el dataset **ArXiv Scientific Research Papers Dataset**, compuesto por artículos de arXiv en áreas como inteligencia artificial, aprendizaje automático, informática y matemáticas.
-
-Para este trabajo:
-- Se seleccionaron los **25 resúmenes más extensos** de cada una de las **cuatro categorías dominantes**.
-- Los resúmenes fueron compilados en un único texto continuo para su análisis.
+Se seleccionó el **[ArXiv Scientific Research Papers Dataset](https://www.kaggle.com/datasets/sumitm004/arxiv-scientific-research-papers-dataset)** de Kaggle, un corpus textual representativo del dominio de investigación en inteligencia artificial, aprendizaje automático, informática y matemáticas.  
+Para el entrenamiento, se compilaron en un único texto los 25 resúmenes más extensos de las cuatro categorías con más artículos.  
+Este enfoque aseguró que el corpus fuera representativo y contuviera la variabilidad léxica y sintáctica necesaria para una buena generalización del modelo.
 
 **Figura 1.** Top 15 categorías más frecuentes.  
-![Top 15 categorías](./Desafio_3/figures/top15_categories_hist.png)
+![Top 15 categorías](./figures/top15_categories_hist.png)
+
+Como se muestra en la figura 1, las categorías dominantes en el corpus seleccionado son **Machine Learning**, **Computer Vision and Pattern Recognition**, **Computation and Language (Natural Language Processing)** y **Artificial Intelligence**. La figura 2 muestra que el corpus final tiene una distribución uniforme de la cantidad de palabras entre las cuatro categorías seleccionadas, lo que ayuda a evitar un sesgo significativo del modelo hacia una sola disciplina.
 
 **Figura 2.** Cantidad de palabras por categoría.  
-![Palabras por categoría](./Desafio_3/figures/top_categories_words_sum.png)
+![Palabras por categoría](./figures/top_categories_words_sum.png)
 
 ---
 
@@ -202,7 +201,7 @@ El corpus fue normalizado y tokenizado carácter a carácter:
 #### 3. Diseño del modelo
 
 ##### 3.1. Modelos
-Se implementaron tres variantes de redes recurrentes (`./Desafio_3/src/architectures.py`):
+Se implementaron tres variantes de redes recurrentes (`./src/architectures.py`):
 
 - **SimpleRNN:** entrada *one-hot*, capa recurrente `SimpleRNN` y capa `Dense`.  
 - **GRU:** capa `Embedding`, dos capas `GRU` y salida `Dense`.  
@@ -214,7 +213,7 @@ Se implementaron tres variantes de redes recurrentes (`./Desafio_3/src/architect
 - Métrica adicional: *Perplejidad*.
 
 ##### 3.2. Callbacks
-Se empleó un *callback* personalizado (`./Desafio_3/src/callbacks.py`) para:
+Se empleó un *callback* personalizado (`./src/callbacks.py`) para:
 
 - **Perplejidad:** calculada al final de cada época sobre validación:\
 $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w_{<i})\right)$$
@@ -227,7 +226,7 @@ $$\mathrm{PPL}(X)=\exp\left(-\frac{1}{t}\sum_{i=1}^{t}\log p_{\theta}(w_i \mid w
 #### 4. Entrenamiento
 
 **Figura 3.** Comparación de modelos durante el entrenamiento.  
-![Comparación de modelos](./Desafio_3/figures/model_comparison.png)
+![Comparación de modelos](./figures/model_comparison.png)
 
 - **SimpleRNN:** peor rendimiento, alta perplejidad y limitaciones en dependencias largas.  
 - **GRU:** mejor rendimiento general, menor perplejidad en validación.  
@@ -275,7 +274,8 @@ future researchs should a related and dependent the clearning computer and the f
 #### 6. Conclusiones
 - **GRU** y **LSTM** superan claramente a **SimpleRNN** en la gestión de dependencias largas.  
 - La mejor combinación fue **GRU + Beam Search Estocástico + Temp = 1.5**, logrando un balance entre coherencia y creatividad.  
-- El modelado *many-to-many* presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
+- El modelado carácter a carácter presenta limitaciones para generar texto coherente en este dominio, pero es útil para evaluar el impacto de arquitectura y estrategia de decodificación.
 
 ---
+
 
