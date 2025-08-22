@@ -108,6 +108,7 @@ Ejemplos de inferencia en preguntas elaboradas por el usario (🧔🏽‍♂️)
 
 -
 🧔🏽‍♂️ *"Where are you from?"*
+
 🤖 *"i am from the united states"*
 
 
