@@ -1,3 +1,4 @@
+# Desafío 4
 # Modelo Seq2Seq (*Keras*) con un solo vocabulario y embedding compartido
 
 Este proyecto consistió en entrenar un modelo encoder–decoder (*seq2seq*) basado en LSTM para generar respuestas en inglés a partir de pares de diálogo. La principal decisión de diseño fue utilizar un único tokenizador y un solo vocabulario tanto para las entradas como para las salidas, junto con una única capa de *embedding* compartida entre encoder y decoder. Esta estrategia simplificó el pipeline, evitó desalineaciones en los índices y redujo significativamente el consumo de memoria.
@@ -84,7 +85,7 @@ Elección del embedding
 
   1. Se inició con `<sos>`.
   2. En cada paso se tomó el token previo, se lo pasó por la misma capa de Embedding compartida, se propagó en el LSTM junto con los estados, y se obtuvo una distribución sobre el vocabulario.
-  3. Se seleccionó el siguiente token (greedy).
+  3. Se seleccionó el siguiente token (*greedy*).
   4. Se detuvo al predecir `<eos>` o alcanzar la longitud máxima.
 
 > Clave: el decoder de inferencia reutilizó exactamente las mismas capas y pesos del entrenamiento (Embedding, LSTM y Dense). No se crearon capas nuevas “en blanco”.
@@ -114,4 +115,4 @@ Ejemplos de inferencia en preguntas elaboradas por el usario (🧔🏽‍♂️)
 
 ### Conclusiones
 
-Un solo vocabulario y un solo Embedding simplificaron el entrenamiento y la inferencia, evitando errores de índices y reduciendo la memoria. La consistencia entre tokenizador, matriz de embeddings y capas (mismos tamaños e índices) fue la clave para resultados estables. Con limpieza adecuada, cobertura de embeddings razonable y un pipeline de inferencia que reutilizó las mismas capas entrenadas, el sistema produjo respuestas muy coherentes para diálogos simples en inglés.
+Un solo vocabulario y un solo Embedding simplificaron el entrenamiento y la inferencia, evitando errores de índices y reduciendo la memoria. Con limpieza adecuada, cobertura de embeddings razonable y un pipeline de inferencia que reutilizó las mismas capas entrenadas, el sistema produjo respuestas muy coherentes para diálogos simples en inglés.
