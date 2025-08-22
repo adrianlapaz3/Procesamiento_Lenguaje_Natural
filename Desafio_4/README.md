@@ -1,5 +1,5 @@
-# Desafío 4
-# Modelo Seq2Seq (*Keras*) con un solo vocabulario y embedding compartido
+# Desafío 4 - chatbot
+## Modelo Seq2Seq (*Keras*) con un solo vocabulario y embedding compartido
 
 Este proyecto consistió en entrenar un modelo encoder–decoder (*seq2seq*) basado en LSTM para generar respuestas en inglés a partir de pares de diálogo. La principal decisión de diseño fue utilizar un único tokenizador y un solo vocabulario tanto para las entradas como para las salidas, junto con una única capa de *embedding* compartida entre encoder y decoder. Esta estrategia simplificó el pipeline, evitó desalineaciones en los índices y redujo significativamente el consumo de memoria.
 
