@@ -90,19 +90,24 @@ Elección del embedding
 > Clave: el decoder de inferencia reutilizó exactamente las mismas capas y pesos del entrenamiento (Embedding, LSTM y Dense). No se crearon capas nuevas “en blanco”.
 
 Ejemplos de inferencia:
+
 Pregunta: 🧔🏽‍♂️ What do you do for a living?
+
 Respuesta: 🤖 i am a student
 
----
+-
 Pregunta: 🧔🏽‍♂️ Do you read?
+
 Respuesta: 🤖 yes
 
----
+-
 Pregunta: 🧔🏽‍♂️ Do you have any pet?
+
 Respuesta: 🤖 yes i have a tiger
 
----
+-
 Pregunta: 🧔🏽‍♂️ Where are you from?
+
 Respuesta: 🤖 i am from the united states
 
 
