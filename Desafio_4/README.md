@@ -91,22 +91,22 @@ Elección del embedding
 
 Ejemplos de inferencia:
 
-Pregunta el 🧔🏽‍♂️ What do you do for a living?
+Pregunta el 🧔🏽‍♂️ *What do you do for a living?*
 
-Responde la 🤖 i am a student
+Responde la 🤖 *i am a student*
 
 -
-Pregunta: 🧔🏽‍♂️ Do you read?
+Pregunta el 🧔🏽‍♂️ *Do you read?*
 
 Responde la 🤖 *yes*
 
 -
-Pregunta: 🧔🏽‍♂️ Do you have any pet?
+Pregunta el 🧔🏽‍♂️ *Do you have any pet?*
 
 Responde la 🤖 *yes i have a tiger*
 
 -
-Pregunta: 🧔🏽‍♂️ Where are you from?
+Pregunta el 🧔🏽‍♂️ *Where are you from?*
 
 Responde la 🤖 *"i am from the united states"*
 
