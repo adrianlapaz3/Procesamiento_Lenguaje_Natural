@@ -92,14 +92,17 @@ Este proyecto **entrenó** un modelo encoder–decoder (*seq2seq*) con LSTM para
 > Clave: el decoder de inferencia **reutilizó exactamente** las **mismas capas y pesos** del entrenamiento (Embedding, LSTM y Dense). No **se crearon** capas nuevas “en blanco”.
 
 **Ejemplos de inferencia:**
-* 🧔🏽‍♂️  what do you do for a living
-* 🤖 i am a student
-* 🧔🏽‍♂️  Do you read?
-* 🤖 yes
-* 🧔🏽‍♂️ Do you have any pet?
-* 🤖 yes i have a tiger
-* 🧔🏽‍♂️ Where are you from?
-* 🤖 i am from the united states
+* **Input** 🧔🏽‍♂️  what do you do for a living
+* **Output**🤖 i am a student
+  
+* **Input** 🧔🏽‍♂️  Do you read?
+* **Output**🤖 yes
+  
+* **Input** 🧔🏽‍♂️ Do you have any pet?
+* **Output**🤖 yes i have a tiger
+  
+* **Input** 🧔🏽‍♂️ Where are you from?
+* **Output**🤖 i am from the united states
 
 ---
 
