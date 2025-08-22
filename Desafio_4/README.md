@@ -16,9 +16,8 @@ Este proyecto consistió en entrenar un modelo encoder–decoder (*seq2seq*) bas
 * El dataset estuvo formado por conversaciones; de cada línea se extrajeron parejas consecutivas (entrada, salida).
 * Se descartaron pares demasiado largos para evitar explotar memoria y estabilizar el entrenamiento (longitudes máximas típicas: 10–30 tokens).
 * Se agregaron marcadores:
-
-  * `<sos>` (start-of-sequence) al inicio de la salida *para el decoder input*.
-  * `<eos>` (end-of-sequence) al final de la salida *para el decoder target*.
+  * `<sos>` (start-of-sequence) al inicio de la salida para el decoder input.
+  * `<eos>` (end-of-sequence) al final de la salida para el decoder target.
 
 Limpieza recomendada
 Se usaron minúsculas, normalización básica de contracciones en inglés, y filtrado de símbolos para dejar solo caracteres alfanuméricos/espacios. Fue importante reasignar los reemplazos (evitar funciones “no in-place”).
