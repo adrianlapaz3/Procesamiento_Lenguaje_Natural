@@ -63,7 +63,7 @@ Minúsculas, normalización básica de contracciones en inglés, y filtrado de s
 * **Decoder**: otra LSTM de 128 unidades que recibe el estado final del encoder. Produce una **secuencia de logits** que se proyecta con una capa densa al tamaño del vocabulario compartido.
 * **Función de pérdida**: entropía cruzada categórica sobre la salida del decoder (one-hot o soft labels).
 * **Métrica**: `accuracy` a nivel de token (útil para seguimiento; no siempre correlaciona con calidad lingüística).
-
+![Diagrama](./images/model_plot.png)
 ---
 
 ## Entrenamiento
@@ -71,10 +71,10 @@ Minúsculas, normalización básica de contracciones en inglés, y filtrado de s
 * Entrenar con *teacher forcing*: el decoder ve la secuencia de salida “real” desplazada por `<sos>`.
 * Partición 80:20 
 * Épocas típicas: 100
-* 
+  
 **Monitoreo**
 * Las gracias del **accuracy** y **loss** muestran lo que parece ser un overfitting, sin embargo el accuracy no es una buena metrica para lenguajes de procesamiento de lenguaje natural.
-
+![Curvas](./images/training_curves.png)
 ---
 
 ## Inferencia (decodificación)
